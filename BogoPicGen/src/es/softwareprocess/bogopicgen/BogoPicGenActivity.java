@@ -66,7 +66,7 @@ public class BogoPicGenActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//takeAPhoto();
-				setBogoPic();
+				setBogoPic(); // Makes random image using BogoPicGen bitmap thingie, Successive clicks changes the pic
 				numberOfAttempts++;
 			}
 		}); 
@@ -89,10 +89,10 @@ public class BogoPicGenActivity extends Activity {
 	//The result should be saved in newBMP
 	//Also should be reflected in the imageButton
 	private void setBogoPic() {
-		//TODO: Add your code here:
-		//TODO: Add your code here:
-		//TODO: Add your code here:
-		//TODO: Add your code here:
+		Toast.makeText(this, "Bogo Set Pic", Toast.LENGTH_SHORT).show(); 
+		newBMP = BogoPicGen.generateBitmap(400, 400); // Get new pic
+		ImageButton ib = (ImageButton) findViewById(R.id.TakeAPhoto); // locate the imag button
+		ib.setImageBitmap(newBMP); // stick the image into the image button
 	}
 	//----------------------------------------------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------------
@@ -104,12 +104,15 @@ public class BogoPicGenActivity extends Activity {
 			try {
 				if (intent.getExtras() != null) {    
 					if (okPressed) {
-						//TODO: Add your code here:
-						//TODO: Add your code here:
-						//TODO: Add your code here:
-						//TODO: Add your code here:
-						//TODO: Add your code here:
-						//TODO: Add your code here:
+
+						
+						Uri uri = (Uri) intent.getExtras().get(MediaStore.EXTRA_OUTPUT); //get the Uri of the image file, file infos
+						OutputStream out = new FileOutputStream(
+								new File(uri.getPath()));
+						newBMP.compress(Bitmap.CompressFormat.JPEG, 75, out); // compresses the image
+						out.close();
+						setResult(RESULT_OK);
+					
 					}//if (okPressed).
 					else{//cancel is pressed:
 						Toast.makeText(this, "Photo Cancelled!", Toast.LENGTH_LONG).show();
